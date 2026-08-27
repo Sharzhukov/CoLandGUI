@@ -262,7 +262,7 @@ std::string Colonist::GetDiseaseName() const {
         case Disease::Healthy:
             return "Full healthy";
         default:
-            break;
+            return "";
     }
 }
 
