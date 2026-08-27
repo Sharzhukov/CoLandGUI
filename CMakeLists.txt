@@ -10,7 +10,10 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Создать исполняемый файл
 add_executable(${PROJECT_NAME} ${SOURCES}
-    include/common/Logger.hpp)
+    include/common/Logger.hpp
+    include/gui/GuiApp.hpp
+    src/gui/GuiApp.cpp
+    include/tui/ConsoleUI.hpp)
 
 # Подключить заголовки
 target_include_directories(${PROJECT_NAME} PRIVATE include)
