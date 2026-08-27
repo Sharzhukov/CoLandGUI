@@ -1,0 +1,57 @@
+# ============================================
+# CoLand .gitignore
+# ============================================
+
+# Сборка
+build/
+build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+install_manifest.txt
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Бинарники
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+*.dSYM/
+
+# Данные и логи
+data/
+saves/
+logs/
+*.log
+*.dat
+
+# Секреты
+.env
+*.key
+*.pem
+*.cert
+
+# Временные файлы
+*.tmp
+*.cache
+.codegraphy/*
