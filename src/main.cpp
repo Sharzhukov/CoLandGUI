@@ -19,7 +19,10 @@
 #include "../include/LaunchApplication.hpp"
 
 int main() {
-    std::cout << "CoLand. Copyright (C) 2026 Alexander Sharzhukov" << std::endl;
+    std::cout << YELC <<"CoLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
     coland::runApplication();
+    std::cout << YELC << "CoLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
+    std::cout << "Push \"Enter\" for exit: ";
+    std::cin.get();
     return 0;
 }
