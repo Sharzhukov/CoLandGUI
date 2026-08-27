@@ -17,10 +17,10 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../include/Colonist.hpp"
-#include "../include/common.hpp"
-#include "../include/Enum.hpp"
-#include "../include/FileManager.hpp"
+#include "Colonist.hpp"
+#include "../common/common.hpp"
+#include "Enum.hpp"
+#include "../common/FileManager.hpp"
 
 #ifndef Colony_hpp
 #define Colony_hpp

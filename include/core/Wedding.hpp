@@ -17,8 +17,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../include/common.hpp"
-#include "../include/Colonist.hpp"
+#include "../common/common.hpp"
+#include "Colonist.hpp"
 
 #ifndef Wedding_hpp
 #define Wedding_hpp

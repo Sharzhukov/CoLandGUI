@@ -57,6 +57,10 @@ namespace ConsoleColor {
 
 #endif /* ConsoleColor */
 
+
+
+#ifndef meNamespace
+#define meNamespace
 namespace coland {
     // [ CL Utils ]
     inline namespace CLUtil {
@@ -81,3 +85,5 @@ namespace coland {
         class Wedding;
     }
 }
+
+#endif /* meNamespace */

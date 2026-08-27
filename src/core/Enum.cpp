@@ -16,7 +16,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "../include/Enum.hpp"
+#include "../include/core/Enum.hpp"
 
 std::vector<std::string> RandName::nameColonyList{"Franki", "Regini", "Avanger", "Avrora"};
 std::vector<std::string> RandName::nameMaleColonistList{"Denis", "Moki", "Huritan", "Kodzim"};

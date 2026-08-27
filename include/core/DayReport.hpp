@@ -17,7 +17,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../include/common.hpp"
+#include "../common/common.hpp"
 
 #ifndef DayReport_hpp
 #define DayReport_hpp

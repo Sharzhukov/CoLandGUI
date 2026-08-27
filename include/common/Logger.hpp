@@ -17,11 +17,11 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../include/common/common.hpp"
+#include "common.hpp"
 
 #ifndef Logger_hpp
 #define Logger_hpp
 
 
 
-#ifdef /* Logger_hpp */
+#endif /* Logger_hpp */

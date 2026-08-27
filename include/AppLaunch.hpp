@@ -17,9 +17,10 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
+#include "common/common.hpp"
+
 #ifndef AppEngine_hpp
 #define AppEngine_hpp
-
 class DayReport {
     /*
      day — номер дня

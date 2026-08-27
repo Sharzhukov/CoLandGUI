@@ -17,8 +17,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../include/common.hpp"
-#include "../include/Enum.hpp"
+#include "../common/common.hpp"
+#include "Enum.hpp"
 
 #ifndef Event_hpp
 #define Event_hpp
