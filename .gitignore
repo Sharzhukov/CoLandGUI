@@ -18,6 +18,7 @@ xcuserdata/
 
 # VS Code
 .vscode/
+.recources/
 *.code-workspace
 
 # Системные файлы
