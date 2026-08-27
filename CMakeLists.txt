@@ -1,30 +1,89 @@
 cmake_minimum_required(VERSION 3.15)
 project(CoLand VERSION 1.0.0 LANGUAGES CXX)
 
-# Требования к компилятору
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Найти все .cpp файлы в src/
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+option(ENABLE_GUI "Build with Raylib GUI" OFF)
 
-# Создать исполняемый файл
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+# ============================================
+# ЯВНО перечисляем все файлы проекта
+# ============================================
+set(BASE_SOURCES
+    src/main.cpp
+    src/core/Colony.cpp
+    src/core/Colonist.cpp
+    src/core/Wedding.cpp
+    src/core/Event.cpp
+    src/core/Enum.cpp
+    src/core/DayReport.cpp
+    src/common/common.cpp
+    src/common/FileManager.cpp
+    src/common/Logger.cpp
+)
 
-# Подключить заголовки
+# ============================================
+# Добавляем правильную реализацию
+# ============================================
+if(ENABLE_GUI)
+    list(APPEND BASE_SOURCES src/gui/GuiApp.cpp)
+    message(STATUS "🔵 Building with GUI support (Raylib)")
+    
+    include(FetchContent)
+    FetchContent_Declare(
+        raylib
+        GIT_REPOSITORY "https://github.com/raysan5/raylib.git"
+        GIT_TAG "5.5"
+        GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(raylib)
+    
+else()
+    list(APPEND BASE_SOURCES src/tui/ConsoleUI.cpp)
+    message(STATUS "🟢 Building with TUI support (Console)")
+endif()
+
+# ============================================
+# Создаём исполняемый файл
+# ============================================
+add_executable(${PROJECT_NAME} ${BASE_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
-# Настройки для macOS (чтобы не было ошибок подписи)
+# Подключаем Raylib, если нужно
+if(ENABLE_GUI)
+    target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+endif()
+
+# ============================================
+# macOS настройки
+# ============================================
 if(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
         XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
     )
+    
+    if(ENABLE_GUI)
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+            "-framework CoreVideo"
+            "-framework IOKit"
+            "-framework Cocoa"
+            "-framework GLUT"
+            "-framework OpenGL"
+        )
+    endif()
 endif()
 
-# Информация о проекте
+# ============================================
+# Информация о сборке
+# ============================================
+message(STATUS "")
 message(STATUS "=====================================")
 message(STATUS "Project: ${PROJECT_NAME}")
 message(STATUS "Version: ${PROJECT_VERSION}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "GUI Support: ${ENABLE_GUI}")
 message(STATUS "=====================================")
+message(STATUS "")

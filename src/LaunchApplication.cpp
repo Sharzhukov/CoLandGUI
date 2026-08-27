@@ -1,4 +1,4 @@
-//  AppLaunch.cpp
+//  LaunchApplication.cpp
 //  CoLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
@@ -16,4 +16,4 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "../include/AppLaunch.hpp"
+#include "../include/LaunchApplication.hpp"

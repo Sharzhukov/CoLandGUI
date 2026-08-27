@@ -16,10 +16,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "../include/common/common.hpp"
-
+#include "../include/LaunchApplication.hpp"
 
 int main() {
-    std::cout << "CoLand is ready!" << std::endl;
+    std::cout << "CoLand. Copyright (C) 2026 Alexander Sharzhukov" << std::endl;
+    coland::runApplication();
     return 0;
 }

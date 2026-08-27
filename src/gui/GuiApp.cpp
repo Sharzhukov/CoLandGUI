@@ -17,3 +17,20 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "../include/gui/GuiApp.hpp"
+#include <raylib.h>
+
+namespace coland{
+    void runApplication() {
+        InitWindow(800, 600, "CoLand GUI");
+        SetTargetFPS(60);
+
+        while (!WindowShouldClose()) {
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawText("CoLand GUI", 10, 10, 30, BLACK);
+            EndDrawing();
+        }
+
+        CloseWindow();
+    }
+}

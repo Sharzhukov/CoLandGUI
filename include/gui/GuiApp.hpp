@@ -17,11 +17,13 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../common/common.hpp"
+#include "../LaunchApplication.hpp"
 
 #ifndef GuiApp_hpp
 #define GuiApp_hpp
 
-
+namespace coland {
+    void runApplication();
+}
 
 #endif /* GuiApp_hpp */

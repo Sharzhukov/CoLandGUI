@@ -1,4 +1,4 @@
-//  AppLaunch.hpp
+//  LaunchApplication.hpp
 //  CoLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
@@ -19,8 +19,13 @@
 #pragma once
 #include "common/common.hpp"
 
-#ifndef AppEngine_hpp
-#define AppEngine_hpp
+namespace coland {
+    void runApplication();
+}
+
+#ifndef LaunchApplication_hpp
+#define LaunchApplication_hpp
+
 class DayReport {
     /*
      day — номер дня
@@ -43,4 +48,4 @@ class ColonyLog {
     
 };
 
-#endif /* AppEngine_hpp */
+#endif /* LaunchApplication_hpp */

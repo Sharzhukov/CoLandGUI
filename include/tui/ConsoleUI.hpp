@@ -17,11 +17,13 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../common/common.hpp"
+#include "../LaunchApplication.hpp"
 
 #ifndef ConsoleUI_hpp
 #define ConsoleUI_hpp
 
-
+namespace coland {
+    void runApplication();
+}
 
 #endif /* ConsoleUI_hpp */

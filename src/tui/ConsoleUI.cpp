@@ -17,3 +17,9 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "../include/tui/ConsoleUI.hpp"
+
+namespace coland{
+    void runApplication() {
+        std::cout << "Building with TUI support (Console)" << std::endl;
+    }
+}
