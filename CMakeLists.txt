@@ -9,7 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Создать исполняемый файл
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES}
+    include/common/Logger.hpp)
 
 # Подключить заголовки
 target_include_directories(${PROJECT_NAME} PRIVATE include)
