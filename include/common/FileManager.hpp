@@ -85,11 +85,11 @@ public:
     
     const std::string GetColonyDIR(const std::string& path) {
         std::filesystem::path tmpF = colonyFolder / path;
-        return (tmpF);
+        return (tmpF.string());
     }
     const std::string GetColonistDIR(const std::string& path) {
         std::filesystem::path tmpF = colonistFolder / path;
-        return (tmpF);
+        return (tmpF.string());
     }
 };
 
