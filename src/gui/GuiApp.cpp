@@ -28,7 +28,7 @@ namespace coland{
         
         const int ColonistPosXmax = m_WidthWindow - SizeColonist;
         const int ColonistPosXmin = 0;
-        const int ColonistPosYmax = m_HeightWindow - SizeColonist;
+        const int ColonistPosYmax = m_HeightWindow - SizeColonist - 30;
         const int ColonistPosYmin = 0;
 
 
@@ -46,8 +46,15 @@ namespace coland{
             SetWindowIcon(iconApp);
             UnloadImage(iconApp);
 
+
+            Texture2D iconStar = LoadTexture("resources/img/star.png");
+            //Image iconStar = LoadImage("resources/img/health.png");
+
             while (!WindowShouldClose()) { 
                 BeginDrawing();
+                ClearBackground(RAYWHITE);
+
+
                 DrawRectangle(0, 0, m_WidthWindow, m_HeightWindow, GREEN);
                 DrawRectangle(0, 0, 75, 25, WHITE);
                 DrawFPS(0, 0);
@@ -77,14 +84,18 @@ namespace coland{
                 }
 
 
-                //ClearBackground(RAYWHITE);
-                
-                //DrawText("CoLand GUI", 10, 10, 30, BLACK);
+                DrawRectangle(0, m_HeightWindow-30, m_WidthWindow, 30, WHITE);
+                DrawTexture(iconStar, 200, 200, WHITE);
 
+                DrawText("CoLand Copyright (C) 2026 by Sharzhukov.", 10, (m_HeightWindow - 23), 15, BLACK);
+
+
+                
 
 
                 EndDrawing();
             }
+            UnloadTexture(iconStar);
         }
 
         CloseWindow();
