@@ -21,14 +21,70 @@
 
 namespace coland{
     void runApplication() {
-        InitWindow(800, 600, "CoLand GUI");
-        SetTargetFPS(60);
+        int m_WidthWindow = 800;
+        int m_HeightWindow = 600;
 
-        while (!WindowShouldClose()) {
-            BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawText("CoLand GUI", 10, 10, 30, BLACK);
-            EndDrawing();
+        const int SizeColonist = 50;
+        
+        const int ColonistPosXmax = m_WidthWindow - SizeColonist;
+        const int ColonistPosXmin = 0;
+        const int ColonistPosYmax = m_HeightWindow - SizeColonist;
+        const int ColonistPosYmin = 0;
+
+
+        int ColonistPosX = m_WidthWindow / 2;
+        int ColonistPosY = m_HeightWindow / 2;
+
+
+        InitWindow(m_WidthWindow, m_HeightWindow, "CoLand ※ colony survival simulator.");
+        
+        if (IsWindowReady())
+        {
+            SetTargetFPS(60);
+
+            Image iconApp = LoadImage("resources/img/icon.png");
+            SetWindowIcon(iconApp);
+            UnloadImage(iconApp);
+
+            while (!WindowShouldClose()) { 
+                BeginDrawing();
+                DrawRectangle(0, 0, m_WidthWindow, m_HeightWindow, GREEN);
+                DrawRectangle(0, 0, 75, 25, WHITE);
+                DrawFPS(0, 0);
+
+
+                DrawRectangle(ColonistPosX, ColonistPosY, SizeColonist, SizeColonist, BROWN);
+
+                if (IsKeyDown(KEY_W) && ColonistPosY >= ColonistPosYmin)
+                {
+                    std::cout << ColonistPosY << std::endl;
+                    ColonistPosY-=3;
+                }
+                if (IsKeyDown(KEY_S) && ColonistPosY <= ColonistPosYmax)
+                {
+                    std::cout << ColonistPosY << std::endl;
+                    ColonistPosY+=3;
+                }
+                if (IsKeyDown(KEY_A) && ColonistPosX >= ColonistPosXmin)
+                {
+                    std::cout << ColonistPosX << std::endl;
+                    ColonistPosX-=3;
+                }
+                if (IsKeyDown(KEY_D) && ColonistPosX <= ColonistPosXmax)
+                {
+                    std::cout << ColonistPosX << std::endl;
+                    ColonistPosX+=3;
+                }
+
+
+                //ClearBackground(RAYWHITE);
+                
+                //DrawText("CoLand GUI", 10, 10, 30, BLACK);
+
+
+
+                EndDrawing();
+            }
         }
 
         CloseWindow();

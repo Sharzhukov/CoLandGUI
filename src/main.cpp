@@ -23,6 +23,6 @@ int main() {
     coland::runApplication();
     std::cout << YELC << "CoLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
     std::cout << "Push \"Enter\" for exit: ";
-    std::cin.get();
+    //TODO: std::cin.get();
     return 0;
 }

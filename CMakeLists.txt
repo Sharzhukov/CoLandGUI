@@ -76,6 +76,15 @@ if(APPLE)
 endif()
 
 # ============================================
+# Добавление resources в исполняемый
+# ============================================
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/resources"
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources"
+)
+
+# ============================================
 # Информация о сборке
 # ============================================
 message(STATUS "")
@@ -87,3 +96,4 @@ message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "GUI Support: ${ENABLE_GUI}")
 message(STATUS "=====================================")
 message(STATUS "")
+
