@@ -27,10 +27,10 @@ void coland::CLUtil::sleep(int ms) {
 }
 
 void coland::CLUtil::getch() {
-    std::cin.get();
+    std::cin.get(); 
 }
 
 std::time_t coland::CLUtil::GetTimeNow()  {
-    auto timeNow = std::chrono::system_clock::now();
+    std::chrono::time_point timeNow = std::chrono::system_clock::now();
     return std::chrono::system_clock::to_time_t(timeNow);
 }
