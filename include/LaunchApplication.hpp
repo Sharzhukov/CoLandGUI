@@ -18,7 +18,11 @@
 
 #pragma once
 #include "common/common.hpp"
-
+#include "core/Colonist.hpp"
+#include "core/Colony.hpp"
+#include "core/Enum.hpp"
+#include "core/Event.hpp"
+#include "core/Wedding.hpp"
 namespace coland {
     void runApplication();
 }

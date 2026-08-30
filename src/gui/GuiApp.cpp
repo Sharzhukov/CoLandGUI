@@ -20,32 +20,80 @@
 #include <raylib.h>
 
 namespace coland{
-    void runApplication() {
-        int m_WidthWindow = 800;
-        int m_HeightWindow = 600;
+    class ColonistList {
+        static int idTotal;
+        int id;
+        int positionX;
+        int positionY;
+    public: 
+        ColonistList() {
+            //TODO: dd
+        }
+    }
 
+    void runApplication() {
+        //f_initWindow();
+        
+        // [ initWindow 1 ]
+        int currentMonitorMain = GetCurrentMonitor();
+        InitWindow(0, 0, "CoLand ※ colony survival simulator.");
+
+        Image iconApp = LoadImage("resources/img/icon.png");
+        SetWindowIcon(iconApp);
+        UnloadImage(iconApp);
+
+        int m_WidthWindow = GetScreenWidth();
+        int m_HeightWindow = GetScreenHeight();
+
+        m_WidthWindow /= 2;
+        m_HeightWindow /= 2;
+
+        SetWindowSize(m_WidthWindow, m_HeightWindow);
+        //ToggleBorderlessWindowed();
+        SetWindowPosition((m_WidthWindow / 2), (m_HeightWindow / 2));   
+        // [ initWindow 0 ]
+
+
+        // [ colonist 1 ]
         const int SizeColonist = 50;
         
         const int ColonistPosXmax = m_WidthWindow - SizeColonist;
         const int ColonistPosXmin = 0;
         const int ColonistPosYmax = m_HeightWindow - SizeColonist - 30;
         const int ColonistPosYmin = 0;
-
-
+    
         int ColonistPosX = m_WidthWindow / 2;
         int ColonistPosY = m_HeightWindow / 2;
 
+        int ColonistPosXnull = m_WidthWindow / 2;
+        int ColonistPosYnull = m_HeightWindow / 2;
+        // [ colonist 0 ]
 
-        InitWindow(m_WidthWindow, m_HeightWindow, "CoLand ※ colony survival simulator.");
         
+        // [ position border 1 ]
+        
+        
+        int positionXhead = 0;
+        int positionXend = m_WidthWindow;
+        int positionYhead = 0;
+        int positionYend = m_HeightWindow;
+
+        int sizeYfooter = 30;
+        int positionYendFoot = m_HeightWindow - sizeYfooter;
+        // [ position border 0 ]
+
+
+
+        Rectangle btnBounds = { m_WidthWindow / 2.0f - 100, m_HeightWindow / 2.0f - 25, 200, 50 };
+    
+        Color btnColor = GRAY; // Начальный цвет кнопки
+        bool btnClicked = false;
+
+
+
         if (IsWindowReady())
         {
             SetTargetFPS(60);
-
-            Image iconApp = LoadImage("resources/img/icon.png");
-            SetWindowIcon(iconApp);
-            UnloadImage(iconApp);
-
 
             Texture2D iconStar = LoadTexture("resources/img/star.png");
             //Image iconStar = LoadImage("resources/img/health.png");
@@ -54,47 +102,91 @@ namespace coland{
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
 
-
-                DrawRectangle(0, 0, m_WidthWindow, m_HeightWindow, GREEN);
+                DrawRectangle(0, 0, positionXend, positionYend, GREEN);
                 DrawRectangle(0, 0, 75, 25, WHITE);
                 DrawFPS(0, 0);
 
 
                 DrawRectangle(ColonistPosX, ColonistPosY, SizeColonist, SizeColonist, BROWN);
 
-                if (IsKeyDown(KEY_W) && ColonistPosY >= ColonistPosYmin)
+                if ((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && ColonistPosY >= ColonistPosYmin)
                 {
                     std::cout << ColonistPosY << std::endl;
                     ColonistPosY-=3;
                 }
-                if (IsKeyDown(KEY_S) && ColonistPosY <= ColonistPosYmax)
+                if ((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && ColonistPosY <= ColonistPosYmax)
                 {
                     std::cout << ColonistPosY << std::endl;
                     ColonistPosY+=3;
                 }
-                if (IsKeyDown(KEY_A) && ColonistPosX >= ColonistPosXmin)
+                if ((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && ColonistPosX >= ColonistPosXmin)
                 {
                     std::cout << ColonistPosX << std::endl;
                     ColonistPosX-=3;
                 }
-                if (IsKeyDown(KEY_D) && ColonistPosX <= ColonistPosXmax)
+                if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && ColonistPosX <= ColonistPosXmax)
                 {
                     std::cout << ColonistPosX << std::endl;
                     ColonistPosX+=3;
                 }
 
 
-                DrawRectangle(0, m_HeightWindow-30, m_WidthWindow, 30, WHITE);
-                DrawTexture(iconStar, 200, 200, WHITE);
 
-                DrawText("CoLand Copyright (C) 2026 by Sharzhukov.", 10, (m_HeightWindow - 23), 15, BLACK);
+
+
+                Vector2 mousePos = GetMousePosition();
+        
+                // Проверяем, находится ли курсор мыши над кнопкой
+                if (CheckCollisionPointRec(mousePos, btnBounds)) {
+                    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+                        btnColor = DARKGRAY; // Цвет при зажатии
+                    } else {
+                        btnColor = LIGHTGRAY; // Цвет при наведении
+                    }
+
+                    // Фиксируем клик после того, как кнопку отпустили
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                        btnClicked = !btnClicked; // Переключаем состояние
+                    }
+                } else {
+                    btnColor = GRAY; // Обычный цвет, когда мышь далеко
+                }
+
+                // --- 2. Отрисовка ---
+
+                // Рисуем тело кнопки
+                DrawRectangleRec(btnBounds, btnColor);
+                
+                // Рисуем рамку кнопки, чтобы она выглядела аккуратнее
+                DrawRectangleLinesEx(btnBounds, 2, BLACK);
+
+                // Текст на кнопке (центрируем вручную)
+                DrawText("CLICK ME", btnBounds.x + 40, btnBounds.y + 15, 20, BLACK);
+
+                // Выводим результат клика на экран
+                if (btnClicked) {
+                    DrawRectangle(ColonistPosXnull, ColonistPosYnull, SizeColonist, SizeColonist, BLACK);
+                }
+
+                
+
+                DrawTexture(iconStar, (10 + (iconStar.height * 1)), (positionYendFoot - iconStar.width), WHITE);
+                DrawTexture(iconStar, (20 + (iconStar.height * 2)), (positionYendFoot - iconStar.width), WHITE);
+                DrawTexture(iconStar, (30 + (iconStar.height * 3)), (positionYendFoot - iconStar.width), WHITE);
+                DrawTexture(iconStar, (40 + (iconStar.height * 4)), (positionYendFoot - iconStar.width), WHITE);
 
 
                 
 
-
+                // [ Footer copiryght 1 ]
+                {
+                    DrawRectangle(0, positionYend-sizeYfooter, positionXend, sizeYfooter, WHITE);
+                    DrawText("CoLand Copyright (C) 2026 by Sharzhukov.", 10, (positionYend - 23), 15, BLACK);
+                }
+                // [ Footer copiryght 0 ]
                 EndDrawing();
             }
+
             UnloadTexture(iconStar);
         }
 

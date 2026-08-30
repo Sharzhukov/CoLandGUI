@@ -1,4 +1,4 @@
-//  GuiApp.hpp
+//  initWindowApp.hpp
 //  CoLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
@@ -17,14 +17,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../LaunchApplication.hpp"
-//#include "../include/gui/lib/initWindowApp.hpp"
-
-#ifndef GuiApp_hpp
-#define GuiApp_hpp
+#include "../include/common/common.hpp"
 
 namespace coland {
-    void runApplication();
+    void f_initWindow();
 }
-
-#endif /* GuiApp_hpp */

@@ -24,5 +24,6 @@ int main() {
     std::cout << YELC << "CoLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
     std::cout << "Push \"Enter\" for exit: ";
     //TODO: std::cin.get();
+
     return 0;
 }

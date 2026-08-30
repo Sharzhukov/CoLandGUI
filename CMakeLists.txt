@@ -21,6 +21,7 @@ set(BASE_SOURCES
     src/common/common.cpp
     src/common/FileManager.cpp
     src/common/Logger.cpp
+    src/gui/lib/initWindowApp.cpp
 )
 
 # ============================================
