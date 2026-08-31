@@ -101,6 +101,12 @@ if(APPLE AND ENABLE_GUI)
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
         XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
     )
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.icns"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/../Resources/appIcon.icns"
+    )
     
     target_link_libraries(${PROJECT_NAME} PRIVATE
         "-framework CoreVideo"
