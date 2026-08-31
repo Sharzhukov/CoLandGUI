@@ -186,6 +186,8 @@ namespace coland{
                 DrawRectangle(colonistCurrent.PositionX_Ref(), colonistCurrent.PositionY_Ref(), SizeColonist, SizeColonist, colonistCurrent.GetColor());
                 DrawText(std::to_string(colonistCurrent.GetID()).c_str(), colonistCurrent.PositionX_Ref() + 10, colonistCurrent.PositionY_Ref() + 10, 30, WHITE);
 
+                
+                
         
                 // Рисуем тело кнопки
                 DrawRectangleRec(btnBounds, btnColor);
