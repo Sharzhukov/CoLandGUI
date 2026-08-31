@@ -127,33 +127,34 @@ namespace coland{
 
                 if (IsKeyDown(KEY_R))
                 {
-                    if (idColonistCurrent == colonistList.size()-1) {
+                    if (idColonistCurrent == (colonistList.size() - 1)) {
                         idColonistCurrent = 0;
                     }
                     else {
                         idColonistCurrent++;
                     }
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    std::cout << "Current id Colonist: " << idColonistCurrent << std::endl;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
                 }
                 
                 if ((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && colonistCurrent.PositionY_Ref() >= ColonistPosYmin)
                 {
-                    std::cout << colonistCurrent.PositionY_Ref() << std::endl;
+                    std::cout << "Colonist id " << colonistCurrent.GetID() << " pos Y: " << colonistCurrent.PositionY_Ref() << std::endl;
                     colonistCurrent.PositionY_Ref() -= 3; //ColonistPosY-=3
                 }
                 if ((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && colonistCurrent.PositionY_Ref() <= ColonistPosYmax)
                 {
-                    std::cout << colonistCurrent.PositionY_Ref() << std::endl;
+                    std::cout << "Colonist id " << colonistCurrent.GetID() << " pos Y: " << colonistCurrent.PositionY_Ref() << std::endl;
                     colonistCurrent.PositionY_Ref() += 3;
                 }
                 if ((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && colonistCurrent.PositionX_Ref() >= ColonistPosXmin)
                 {
-                    std::cout << colonistCurrent.PositionX_Ref() << std::endl;
+                    std::cout << "Colonist id " << colonistCurrent.GetID() << " pos X: " << colonistCurrent.PositionX_Ref() << std::endl;
                     colonistCurrent.PositionX_Ref() -= 3;
                 }
                 if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && colonistCurrent.PositionX_Ref() <= ColonistPosXmax)
                 {
-                    std::cout << colonistCurrent.PositionX_Ref() << std::endl;
+                    std::cout << "Colonist id " << colonistCurrent.GetID() << " pos X: " << colonistCurrent.PositionX_Ref() << std::endl;
                     colonistCurrent.PositionX_Ref() += 3;
                 }
 
@@ -183,6 +184,14 @@ namespace coland{
                 DrawRectangle(0, 0, 75, 25, WHITE);
                 DrawFPS(0, 0);
 
+
+                for (size_t i = 0; i < colonistList.size(); i++)
+                {
+                    if (i == idColonistCurrent) { continue; }
+                    DrawRectangle(colonistList[i].GetPositionX(), colonistList[i].GetPositionY(), SizeColonist, SizeColonist, BLACK);
+                    DrawText(std::to_string(colonistList[i].GetID()).c_str(), colonistList[i].GetPositionX() + 10, colonistList[i].GetPositionY() + 10, 30, WHITE);
+                }
+                
                 DrawRectangle(colonistCurrent.PositionX_Ref(), colonistCurrent.PositionY_Ref(), SizeColonist, SizeColonist, colonistCurrent.GetColor());
                 DrawText(std::to_string(colonistCurrent.GetID()).c_str(), colonistCurrent.PositionX_Ref() + 10, colonistCurrent.PositionY_Ref() + 10, 30, WHITE);
 
@@ -201,10 +210,10 @@ namespace coland{
                 // Выводим результат клика на экран
                 if (btnClicked) {
                     //DrawRectangle(ColonistPosXnull, ColonistPosYnull, SizeColonist, SizeColonist, BLACK);
-                    colonistList.emplace_back(ColonistPosXnull, ColonistPosYnull, BLACK);
+                    colonistList.emplace_back(ColonistPosXnull, ColonistPosYnull, BROWN);
                     idColonistCurrent = colonistList.back().GetID();
                     btnClicked = !btnClicked;
-                    std::cout << colonistList.size() << std::endl;
+                    std::cout << "New Colonist id: "<< (colonistList.size() - 1) << std::endl;
                 }
 
                 
