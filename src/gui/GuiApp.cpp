@@ -55,7 +55,7 @@ namespace coland{
         int currentMonitorMain = GetCurrentMonitor();
         InitWindow(0, 0, "CoLand ※ colony survival simulator.");
 
-        Image iconApp = LoadImage("resources/img/icon.png");
+        Image iconApp = LoadImage("resources/img/appIcon.png");
         SetWindowIcon(iconApp);
         UnloadImage(iconApp);
 

@@ -57,6 +57,31 @@ if(ENABLE_GUI)
 endif()
 
 # ============================================
+# настройки для иконки
+# ============================================
+if(WIN32)
+    # --- НАСТРОЙКА ДЛЯ WINDOWS ---
+    # Добавляем файл ресурсов в список исходников
+    list(APPEND SOURCES resources/assets/resources.rc)
+
+elseif(APPLE)
+    # --- НАСТРОЙКА ДЛЯ MACOS ---
+    # Указываем путь к .icns файлу
+    set(MACOS_ICON "resources/assets/appIcon.icns")
+    
+    # Добавляем иконку в файлы проекта
+    list(APPEND SOURCES ${MACOS_ICON})
+    
+    # Говорим CMake, что этот файл должен быть скопирован в ресурсы .app бандла
+    set_source_files_properties(${MACOS_ICON} PROPERTIES 
+        MACOSX_PACKAGE_LOCATION Resources
+    )
+    
+    # Задаем имя файла иконки в Info.plist (без расширения .icns)
+    set(MACOSX_BUNDLE_ICON_FILE "appIcon")
+endif()
+
+# ============================================
 # macOS настройки
 # ============================================
 if(APPLE)
