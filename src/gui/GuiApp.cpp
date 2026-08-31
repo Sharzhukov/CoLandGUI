@@ -44,6 +44,8 @@ namespace coland{
         void SetPositionX(int positionX) { this->positionX = positionX; }
         void SetPositionY(int positionY) { this->positionY = positionY; }
         void SetColor(Color color) { this->color = color; }
+
+        Vector2 Position() { return {(float)positionX, (float)positionY}; }
     };
     int ColonistList::idTotal = 0;
 
@@ -102,7 +104,7 @@ namespace coland{
 
 
 
-        Rectangle btnBounds = { m_WidthWindow / 2.0f - 100, m_HeightWindow / 2.0f - 25, 200, 50 };
+        Rectangle btnBounds = { positionXend - 200.0f, positionYendFoot - 40.0f, 200, 40 };
         Color btnColor = GRAY; // Начальный цвет кнопки
         bool btnClicked = false;
 
@@ -113,7 +115,8 @@ namespace coland{
         
 
 
-
+        int deleteCount = 0;
+        
         if (IsWindowReady())
         {
             SetTargetFPS(60);
@@ -125,7 +128,7 @@ namespace coland{
                 ColonistList& colonistCurrent = colonistList[idColonistCurrent];
 
 
-                if (IsKeyDown(KEY_R))
+                if (IsKeyPressed(KEY_R))
                 {
                     if (idColonistCurrent == (colonistList.size() - 1)) {
                         idColonistCurrent = 0;
@@ -134,28 +137,40 @@ namespace coland{
                         idColonistCurrent++;
                     }
                     std::cout << "Current id Colonist: " << idColonistCurrent << std::endl;
-                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                    //std::this_thread::sleep_for(std::chrono::milliseconds(250));
                 }
+                if (IsKeyPressed(KEY_DELETE) && (colonistList.size() != 1))
+                {
+                    std::vector<ColonistList>::iterator it = colonistList.begin();
+                    std::advance(it, idColonistCurrent);
+                    std::cout << colonistList.back().GetID() << std::endl;
+                    idColonistCurrent = 0;
+                    colonistList.erase(it);
+                    deleteCount++;
+                }
+                
+                
+                int runColonist = (IsKeyDown(KEY_LEFT_SHIFT)) ? (3) : (0);
                 
                 if ((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && colonistCurrent.PositionY_Ref() >= ColonistPosYmin)
                 {
                     std::cout << "Colonist id " << colonistCurrent.GetID() << " pos Y: " << colonistCurrent.PositionY_Ref() << std::endl;
-                    colonistCurrent.PositionY_Ref() -= 3; //ColonistPosY-=3
+                    colonistCurrent.PositionY_Ref() -= (3 + runColonist); //ColonistPosY-=3
                 }
                 if ((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && colonistCurrent.PositionY_Ref() <= ColonistPosYmax)
                 {
                     std::cout << "Colonist id " << colonistCurrent.GetID() << " pos Y: " << colonistCurrent.PositionY_Ref() << std::endl;
-                    colonistCurrent.PositionY_Ref() += 3;
+                    colonistCurrent.PositionY_Ref() += (3 + runColonist);
                 }
                 if ((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && colonistCurrent.PositionX_Ref() >= ColonistPosXmin)
                 {
                     std::cout << "Colonist id " << colonistCurrent.GetID() << " pos X: " << colonistCurrent.PositionX_Ref() << std::endl;
-                    colonistCurrent.PositionX_Ref() -= 3;
+                    colonistCurrent.PositionX_Ref() -= (3 + runColonist);
                 }
                 if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && colonistCurrent.PositionX_Ref() <= ColonistPosXmax)
                 {
                     std::cout << "Colonist id " << colonistCurrent.GetID() << " pos X: " << colonistCurrent.PositionX_Ref() << std::endl;
-                    colonistCurrent.PositionX_Ref() += 3;
+                    colonistCurrent.PositionX_Ref() += (3 + runColonist);
                 }
 
 
@@ -200,20 +215,17 @@ namespace coland{
         
                 // Рисуем тело кнопки
                 DrawRectangleRec(btnBounds, btnColor);
-                
                 // Рисуем рамку кнопки, чтобы она выглядела аккуратнее
                 DrawRectangleLinesEx(btnBounds, 2, BLACK);
-
                 // Текст на кнопке (центрируем вручную)
-                DrawText("CLICK ME", btnBounds.x + 40, btnBounds.y + 15, 20, BLACK);
+                DrawText("ADD Colonist", btnBounds.x + 35, btnBounds.y + 10, 20, BLACK);
 
                 // Выводим результат клика на экран
                 if (btnClicked) {
-                    //DrawRectangle(ColonistPosXnull, ColonistPosYnull, SizeColonist, SizeColonist, BLACK);
                     colonistList.emplace_back(ColonistPosXnull, ColonistPosYnull, BROWN);
-                    idColonistCurrent = colonistList.back().GetID();
+                    idColonistCurrent = 0;
                     btnClicked = !btnClicked;
-                    std::cout << "New Colonist id: "<< (colonistList.size() - 1) << std::endl;
+                    std::cout << "New Colonist id: " << (colonistList.size() - 1) << std::endl;
                 }
 
                 
