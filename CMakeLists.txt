@@ -25,7 +25,7 @@ set(BASE_SOURCES
 )
 
 # ============================================
-# Добавляем правильную реализацию
+# Добавляем GUI или TUI
 # ============================================
 if(ENABLE_GUI)
     list(APPEND BASE_SOURCES src/gui/GuiApp.cpp)
@@ -46,12 +46,11 @@ else()
 endif()
 
 # ============================================
-# Создаём исполняемый файл
+# ОСНОВНАЯ ЦЕЛЬ: CoLand (используется для обоих режимов)
 # ============================================
 add_executable(${PROJECT_NAME} ${BASE_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
-# Подключаем Raylib, если нужно
 if(ENABLE_GUI)
     target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 endif()
@@ -60,10 +59,8 @@ endif()
 # ИКОНКИ
 # ============================================
 if(WIN32)
-    # Windows: .ico файл
     set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.ico")
     if(EXISTS ${ICON_FILE})
-        # Создаём .rc файл (ресурсы)
         configure_file(
             "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.rc.in"
             "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc"
@@ -76,7 +73,6 @@ if(WIN32)
     endif()
 
 elseif(APPLE)
-    # macOS: .icns файл
     set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.icns")
     if(EXISTS ${ICON_FILE})
         set_source_files_properties(${ICON_FILE} PROPERTIES
@@ -93,16 +89,52 @@ elseif(APPLE)
 endif()
 
 # ============================================
-# macOS настройки
+# macOS НАСТРОЙКИ (только для GUI)
 # ============================================
-if(APPLE)
+if(APPLE AND ENABLE_GUI)
     set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.sharzhukov.coland"
+        MACOSX_BUNDLE_BUNDLE_NAME "CoLand"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0.0"
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
         XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
     )
     
-    if(ENABLE_GUI)
-        target_link_libraries(${PROJECT_NAME} PRIVATE
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework CoreVideo"
+        "-framework IOKit"
+        "-framework Cocoa"
+        "-framework GLUT"
+        "-framework OpenGL"
+    )
+endif()
+
+# ============================================
+# КОПИРОВАНИЕ РЕСУРСОВ
+# ============================================
+if(ENABLE_GUI)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources"
+    )
+endif()
+
+# ============================================
+# ОТДЕЛЬНАЯ ЦЕЛЬ ДЛЯ ЛОГОВ (CoLandLog)
+# ============================================
+if(ENABLE_GUI)
+    # Копируем исходники для лог-версии
+    set(LOG_SOURCES ${BASE_SOURCES})
+    
+    add_executable(CoLandLog ${LOG_SOURCES})
+    target_include_directories(CoLandLog PRIVATE include)
+    target_link_libraries(CoLandLog PRIVATE raylib)
+    
+    if(APPLE)
+        target_link_libraries(CoLandLog PRIVATE
             "-framework CoreVideo"
             "-framework IOKit"
             "-framework Cocoa"
@@ -113,16 +145,7 @@ if(APPLE)
 endif()
 
 # ============================================
-# Добавление resources в исполняемый
-# ============================================
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources"
-    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources"
-)
-
-# ============================================
-# Информация о сборке
+# ИНФОРМАЦИЯ
 # ============================================
 message(STATUS "")
 message(STATUS "=====================================")
