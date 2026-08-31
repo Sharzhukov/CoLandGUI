@@ -57,28 +57,39 @@ if(ENABLE_GUI)
 endif()
 
 # ============================================
-# настройки для иконки
+# ИКОНКИ
 # ============================================
 if(WIN32)
-    # --- НАСТРОЙКА ДЛЯ WINDOWS ---
-    # Добавляем файл ресурсов в список исходников
-    list(APPEND SOURCES resources/assets/resources.rc)
+    # Windows: .ico файл
+    set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.ico")
+    if(EXISTS ${ICON_FILE})
+        # Создаём .rc файл (ресурсы)
+        configure_file(
+            "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.rc.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc"
+            @ONLY
+        )
+        target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc")
+        message(STATUS "✅ Windows icon added")
+    else()
+        message(WARNING "⚠️ Windows icon not found: ${ICON_FILE}")
+    endif()
 
 elseif(APPLE)
-    # --- НАСТРОЙКА ДЛЯ MACOS ---
-    # Указываем путь к .icns файлу
-    set(MACOS_ICON "resources/assets/appIcon.icns")
-    
-    # Добавляем иконку в файлы проекта
-    list(APPEND SOURCES ${MACOS_ICON})
-    
-    # Говорим CMake, что этот файл должен быть скопирован в ресурсы .app бандла
-    set_source_files_properties(${MACOS_ICON} PROPERTIES 
-        MACOSX_PACKAGE_LOCATION Resources
-    )
-    
-    # Задаем имя файла иконки в Info.plist (без расширения .icns)
-    set(MACOSX_BUNDLE_ICON_FILE "appIcon")
+    # macOS: .icns файл
+    set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.icns")
+    if(EXISTS ${ICON_FILE})
+        set_source_files_properties(${ICON_FILE} PROPERTIES
+            MACOSX_PACKAGE_LOCATION Resources
+        )
+        target_sources(${PROJECT_NAME} PRIVATE ${ICON_FILE})
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+            MACOSX_BUNDLE_ICON_FILE appIcon
+        )
+        message(STATUS "✅ macOS icon added")
+    else()
+        message(WARNING "⚠️ macOS icon not found: ${ICON_FILE}")
+    endif()
 endif()
 
 # ============================================
@@ -122,4 +133,3 @@ message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "GUI Support: ${ENABLE_GUI}")
 message(STATUS "=====================================")
 message(STATUS "")
-
