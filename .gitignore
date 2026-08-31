@@ -55,3 +55,4 @@ logs/
 *.tmp
 *.cache
 .codegraphy/*
+.SourceTrail/*

@@ -18,21 +18,38 @@
 
 #include "../include/gui/GuiApp.hpp"
 #include <raylib.h>
-
 namespace coland{
     class ColonistList {
         static int idTotal;
         int id;
         int positionX;
         int positionY;
+        Color color;
     public: 
-        ColonistList() {
-            //TODO: dd
+        ColonistList(int positionXnull, int positionYnull, Color color) {
+            positionX = positionXnull;
+            positionY = positionYnull;
+            this->color = color;
+            id = idTotal++;
         }
-    }
+        int GetID() { return id; }
+        int GetPositionX() { return positionX; }
+        int GetPositionY() { return positionY; }
+        Color GetColor() { return color; }
+
+        int& PositionX_Ref() { return positionX; }
+        int& PositionY_Ref() { return positionY; }
+        Color& Color_Ref() { return color; }
+
+        void SetPositionX(int positionX) { this->positionX = positionX; }
+        void SetPositionY(int positionY) { this->positionY = positionY; }
+        void SetColor(Color color) { this->color = color; }
+    };
+    int ColonistList::idTotal = 0;
 
     void runApplication() {
         //f_initWindow();
+        std::vector<ColonistList> colonistList;
         
         // [ initWindow 1 ]
         int currentMonitorMain = GetCurrentMonitor();
@@ -54,6 +71,7 @@ namespace coland{
         // [ initWindow 0 ]
 
 
+
         // [ colonist 1 ]
         const int SizeColonist = 50;
         
@@ -61,18 +79,18 @@ namespace coland{
         const int ColonistPosXmin = 0;
         const int ColonistPosYmax = m_HeightWindow - SizeColonist - 30;
         const int ColonistPosYmin = 0;
-    
+
         int ColonistPosX = m_WidthWindow / 2;
         int ColonistPosY = m_HeightWindow / 2;
 
         int ColonistPosXnull = m_WidthWindow / 2;
         int ColonistPosYnull = m_HeightWindow / 2;
+        colonistList.emplace_back(ColonistPosXnull, ColonistPosYnull, BROWN);
         // [ colonist 0 ]
+
 
         
         // [ position border 1 ]
-        
-        
         int positionXhead = 0;
         int positionXend = m_WidthWindow;
         int positionYhead = 0;
@@ -85,9 +103,14 @@ namespace coland{
 
 
         Rectangle btnBounds = { m_WidthWindow / 2.0f - 100, m_HeightWindow / 2.0f - 25, 200, 50 };
-    
         Color btnColor = GRAY; // Начальный цвет кнопки
         bool btnClicked = false;
+
+
+
+
+        int idColonistCurrent = 0;
+        
 
 
 
@@ -99,43 +122,43 @@ namespace coland{
             //Image iconStar = LoadImage("resources/img/health.png");
 
             while (!WindowShouldClose()) { 
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
-
-                DrawRectangle(0, 0, positionXend, positionYend, GREEN);
-                DrawRectangle(0, 0, 75, 25, WHITE);
-                DrawFPS(0, 0);
+                ColonistList& colonistCurrent = colonistList[idColonistCurrent];
 
 
-                DrawRectangle(ColonistPosX, ColonistPosY, SizeColonist, SizeColonist, BROWN);
-
-                if ((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && ColonistPosY >= ColonistPosYmin)
+                if (IsKeyDown(KEY_R))
                 {
-                    std::cout << ColonistPosY << std::endl;
-                    ColonistPosY-=3;
+                    if (idColonistCurrent == colonistList.size()-1) {
+                        idColonistCurrent = 0;
+                    }
+                    else {
+                        idColonistCurrent++;
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 }
-                if ((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && ColonistPosY <= ColonistPosYmax)
+                
+                if ((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && colonistCurrent.PositionY_Ref() >= ColonistPosYmin)
                 {
-                    std::cout << ColonistPosY << std::endl;
-                    ColonistPosY+=3;
+                    std::cout << colonistCurrent.PositionY_Ref() << std::endl;
+                    colonistCurrent.PositionY_Ref() -= 3; //ColonistPosY-=3
                 }
-                if ((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && ColonistPosX >= ColonistPosXmin)
+                if ((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && colonistCurrent.PositionY_Ref() <= ColonistPosYmax)
                 {
-                    std::cout << ColonistPosX << std::endl;
-                    ColonistPosX-=3;
+                    std::cout << colonistCurrent.PositionY_Ref() << std::endl;
+                    colonistCurrent.PositionY_Ref() += 3;
                 }
-                if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && ColonistPosX <= ColonistPosXmax)
+                if ((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && colonistCurrent.PositionX_Ref() >= ColonistPosXmin)
                 {
-                    std::cout << ColonistPosX << std::endl;
-                    ColonistPosX+=3;
+                    std::cout << colonistCurrent.PositionX_Ref() << std::endl;
+                    colonistCurrent.PositionX_Ref() -= 3;
                 }
-
-
-
+                if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && colonistCurrent.PositionX_Ref() <= ColonistPosXmax)
+                {
+                    std::cout << colonistCurrent.PositionX_Ref() << std::endl;
+                    colonistCurrent.PositionX_Ref() += 3;
+                }
 
 
                 Vector2 mousePos = GetMousePosition();
-        
                 // Проверяем, находится ли курсор мыши над кнопкой
                 if (CheckCollisionPointRec(mousePos, btnBounds)) {
                     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
@@ -152,8 +175,18 @@ namespace coland{
                     btnColor = GRAY; // Обычный цвет, когда мышь далеко
                 }
 
-                // --- 2. Отрисовка ---
 
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
+
+                DrawRectangle(0, 0, positionXend, positionYend, GREEN);
+                DrawRectangle(0, 0, 75, 25, WHITE);
+                DrawFPS(0, 0);
+
+                DrawRectangle(colonistCurrent.PositionX_Ref(), colonistCurrent.PositionY_Ref(), SizeColonist, SizeColonist, colonistCurrent.GetColor());
+                DrawText(std::to_string(colonistCurrent.GetID()).c_str(), colonistCurrent.PositionX_Ref() + 10, colonistCurrent.PositionY_Ref() + 10, 30, WHITE);
+
+        
                 // Рисуем тело кнопки
                 DrawRectangleRec(btnBounds, btnColor);
                 
@@ -165,7 +198,11 @@ namespace coland{
 
                 // Выводим результат клика на экран
                 if (btnClicked) {
-                    DrawRectangle(ColonistPosXnull, ColonistPosYnull, SizeColonist, SizeColonist, BLACK);
+                    //DrawRectangle(ColonistPosXnull, ColonistPosYnull, SizeColonist, SizeColonist, BLACK);
+                    colonistList.emplace_back(ColonistPosXnull, ColonistPosYnull, BLACK);
+                    idColonistCurrent = colonistList.back().GetID();
+                    btnClicked = !btnClicked;
+                    std::cout << colonistList.size() << std::endl;
                 }
 
                 
