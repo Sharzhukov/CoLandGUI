@@ -56,3 +56,5 @@ logs/
 *.cache
 .codegraphy/*
 .SourceTrail/*
+.sourcetrail/*
+.sourcetrail/
