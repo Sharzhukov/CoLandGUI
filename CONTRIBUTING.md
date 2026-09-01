@@ -120,4 +120,4 @@ By contributing, you agree that your contributions will be licensed under the **
 For questions, open an issue or contact:
 
 - GitHub: [@Sharzhukov](https://github.com/Sharzhukov)
-- Email: sharzhukov@sharzhukov.ru
+- Email: i@sharzhukov.ru
