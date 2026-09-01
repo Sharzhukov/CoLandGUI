@@ -1,11 +1,3 @@
-
----
-
-## 📄 `SECURITY.md`
-
-Политика безопасности проекта.
-
-```markdown
 # Security Policy 🔒
 
 ## Supported Versions
