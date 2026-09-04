@@ -1,4 +1,4 @@
-//  GuiApp.hpp
+//  DataApp.hpp
 //  CoLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
@@ -17,17 +17,16 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "../LaunchApplication.hpp"
-#include "lib/DataApp.hpp"
-//#include "../include/gui/lib/initWindowApp.hpp"
+#include "../include/common/common.hpp"
 
-#ifndef GuiApp_hpp
-#define GuiApp_hpp
+#ifndef DataApp_hpp
+#define DataApp_hpp
 
 namespace coland {
-    void runApplication();
-
-    
+    class DataApp {
+    public:
+        void initDA();
+    };
 }
 
-#endif /* GuiApp_hpp */
+#endif /* DataApp_hpp */
