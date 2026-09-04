@@ -1,4 +1,4 @@
-//  GuiApp.hpp
+//  DataApp.cpp
 //  CoLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
@@ -16,18 +16,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#pragma once
-#include "../LaunchApplication.hpp"
-#include "lib/DataApp.hpp"
-//#include "../include/gui/lib/initWindowApp.hpp"
-
-#ifndef GuiApp_hpp
-#define GuiApp_hpp
+#include "../include/gui/lib/DataApp.hpp"
+#include <raylib.h>
 
 namespace coland {
-    void runApplication();
-
-    
+    void DataApp::initDA() {
+        std::cout << "Hello World!" << std::endl;
+    }
 }
-
-#endif /* GuiApp_hpp */

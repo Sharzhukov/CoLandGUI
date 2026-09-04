@@ -18,7 +18,32 @@
 
 #include "../include/gui/GuiApp.hpp"
 #include <raylib.h>
+
+//class coland::DataApp;
 namespace coland{
+    #ifdef __APPLE__
+        #include <mach-o/dyld.h>
+    #endif
+
+    std::string getResourcePath() {
+        #ifdef _WIN32
+            return "./resources/";
+        #elif __APPLE__
+            // Проверяем, запущено ли приложение как .app или как бинарник
+            char path[1024];
+            uint32_t size = sizeof(path);
+            if (_NSGetExecutablePath(path, &size) == 0) {
+                std::string exePath(path);
+                if (exePath.find(".app/") != std::string::npos) {
+                    // .app бандл
+                    return exePath.substr(0, exePath.find(".app/") + 5) + "Contents/Resources/";
+                }
+            }
+            return ".Contents/MacOS/resources/";
+        #else
+            return "./resources/";
+        #endif
+    }
     class ColonistList {
         static int idTotal;
         int id;
@@ -52,6 +77,7 @@ namespace coland{
     void runApplication() {
         //f_initWindow();
         std::vector<ColonistList> colonistList;
+        DataApp dApp;
         
         // [ initWindow 1 ]
         int currentMonitorMain = GetCurrentMonitor();
@@ -121,6 +147,7 @@ namespace coland{
         {
             SetTargetFPS(60);
 
+            //Texture2D iconStar = LoadTexture((getResourcePath() + "img/star.png").c_str());
             Texture2D iconStar = LoadTexture("resources/img/star.png");
             //Image iconStar = LoadImage("resources/img/health.png");
 
@@ -199,6 +226,7 @@ namespace coland{
                 DrawRectangle(0, 0, 75, 25, WHITE);
                 DrawFPS(0, 0);
 
+                //dApp.initDA();
 
                 for (size_t i = 0; i < colonistList.size(); i++)
                 {
